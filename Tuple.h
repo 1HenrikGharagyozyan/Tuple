@@ -18,7 +18,8 @@ struct tuple_leaf
 
     template<typename U, typename = std::enable_if_t<std::is_constructible_v<T, U&&>>>
     constexpr explicit tuple_leaf(U&& v) noexcept(std::is_nothrow_constructible_v<T, U&&>)
-        : value(std::forward<U>(v)) {
+        : value(std::forward<U>(v)) 
+    {
     }
 
     constexpr tuple_leaf(const tuple_leaf&) = default;
@@ -48,7 +49,9 @@ struct tuple_impl<std::index_sequence<Is...>, Ts...> : tuple_leaf<Is, Ts>...
 
     template<typename... Us, typename = std::enable_if_t<(sizeof...(Us) == sizeof...(Ts))>>
     constexpr explicit tuple_impl(Us&&... args)
-        : tuple_leaf<Is, Ts>(std::forward<Us>(args))... {}
+        : tuple_leaf<Is, Ts>(std::forward<Us>(args))... 
+    {
+    }
 
     constexpr tuple_impl(const self_type&) = default;
     constexpr tuple_impl(self_type&&) noexcept((std::is_nothrow_move_constructible_v<Ts> && ...)) = default;
